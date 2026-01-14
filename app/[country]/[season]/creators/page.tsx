@@ -1,9 +1,27 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { creators } from "@/data/creators";
+import CreatorCard from "@/components/CreatorCard";
+import FilterChips from "@/components/FilterChips";
+
+type Rarity = "All" | "Base" | "Foil" | "Holo";
+
 type PageProps = {
-  params: Promise<{ country: string; season: string }>;
+  params: { country: string; season: string };
 };
 
-export default async function CreatorsPage({ params }: PageProps) {
-  const { country, season } = await params;
+export default function CreatorsPage({ params }: PageProps) {
+  const { country, season } = params;
+  const [selectedRarity, setSelectedRarity] = useState<Rarity>("All");
+
+  const filteredCreators =
+    selectedRarity === "All"
+      ? creators
+      : creators.filter((creator) => creator.rarity === selectedRarity);
+
+  const rarities: Rarity[] = ["All", "Base", "Foil", "Holo"];
 
   return (
     <div className="mx-auto w-full max-w-6xl px-6 py-16">
@@ -13,8 +31,26 @@ export default async function CreatorsPage({ params }: PageProps) {
         <span className="text-neutral-100">{season}</span>
       </p>
 
-      <div className="mt-10 rounded-2xl border border-neutral-800 bg-neutral-950/60 p-10 text-neutral-300">
-        Skeleton page. Next: creator card grid + profile routes.
+      {/* Rarity Filter */}
+      <div className="mt-8">
+        <FilterChips
+          options={rarities}
+          value={selectedRarity}
+          onChange={(value) => setSelectedRarity(value as Rarity)}
+        />
+      </div>
+
+      {/* Creator Grid */}
+      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredCreators.map((creator) => (
+          <Link
+            key={creator.id}
+            href={`/${country}/${season}/creators/${creator.id}`}
+            className="block rounded-2xl transition-all hover:ring-2 hover:ring-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+          >
+            <CreatorCard creator={creator} />
+          </Link>
+        ))}
       </div>
     </div>
   );
