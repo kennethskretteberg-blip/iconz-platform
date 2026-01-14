@@ -29,6 +29,7 @@
 - Reusable components under /components.
 - Shared helpers under /lib.
 - Mock data under /data.
+- Prefer import aliases (@/...) over relative imports.
 
 ## Output expectations
 - Production-quality code.
