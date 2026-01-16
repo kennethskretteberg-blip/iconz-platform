@@ -2,11 +2,11 @@ import Link from "next/link";
 import { creators } from "@/data/creators";
 
 type PageProps = {
-  params: Promise<{ country: string; season: string; creatorId: string }>;
+  params: { country: string; season: string; creatorId: string };
 };
 
-export default async function CreatorProfilePage({ params }: PageProps) {
-  const { country, season, creatorId } = await params;
+export default function CreatorProfilePage({ params }: PageProps) {
+  const { country, season, creatorId } = params;
 
   const creator = creators.find((c) => c.id === creatorId);
 
