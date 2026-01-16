@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { creators } from "@/data/creators";
 import CreatorCard from "@/components/CreatorCard";
 import FilterChips from "@/components/FilterChips";
@@ -9,12 +10,12 @@ import SeasonSelector from "@/components/SeasonSelector";
 
 type Rarity = "All" | "Base" | "Foil" | "Holo";
 
-type PageProps = {
-  params: { country: string; season: string };
-};
+export default function CreatorsPage() {
+  const params = useParams<{ country: string; season: string }>();
 
-export default function CreatorsPage({ params }: PageProps) {
-  const { country, season } = params;
+// useParams may return string | string[]
+  const country = Array.isArray(params.country) ? params.country[0] : params.country;
+  const season = Array.isArray(params.season) ? params.season[0] : params.season;
   const [selectedRarity, setSelectedRarity] = useState<Rarity>("All");
 
   const filteredCreators =
