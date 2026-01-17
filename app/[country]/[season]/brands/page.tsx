@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { use, useState, useMemo } from "react";
 import SeasonSelector from "@/components/SeasonSelector";
 import FilterChips from "@/components/FilterChips";
 import { brands, type Brand } from "@/data/brands";
 
 type PageProps = {
-  params: { country: string; season: string };
+  params: Promise<{ country: string; season: string }>;
 };
 
 export default function BrandsPage({ params }: PageProps) {
-  const { country, season } = params;
+  const { country, season } = use(params);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIndustry, setSelectedIndustry] = useState("All");
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
